@@ -52,7 +52,7 @@ import java.util.List;
             Users user = userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
 
             if (user != null) {
-                RespondUserDto userDto = new RespondUserDto(user.getId(), user.getUsername(), user.getEmail());
+                RespondUserDto userDto = new RespondUserDto(user.getId(), user.getUsername(), user.getEmail(), user.getPhotoUrl());
                 return ResponseEntity.ok(userDto);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

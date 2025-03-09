@@ -22,4 +22,11 @@ public class RespondUserDto {
         this.username = username;
         this.email = email;
     }
+
+    public RespondUserDto(Long id, String email, String username, String photoUrl) {
+        this.id = id;
+        this.email = email;
+        this.username = username;
+        this.photoUrl = photoUrl;
+    }
 }
