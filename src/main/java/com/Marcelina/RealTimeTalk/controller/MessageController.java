@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/messages")
-@CrossOrigin(origins = "http://localhost:4200")
 public class MessageController {
 
     private final MessagesService messagesService;

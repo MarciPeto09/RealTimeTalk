@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @RestController
 @RequestMapping("/api")
 public class FileController {
 
     private final FileStorageService fileStorageService;
+    private final Path uploadDir = Paths.get("uploads");
 
     @Autowired
     public FileController(FileStorageService fileStorageService) {
@@ -28,15 +31,18 @@ public class FileController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+
         try {
-            String fileName = fileStorageService.storeFile(file);
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/uploads/")
-                    .path(fileName)
-                    .toUriString();
-            return ResponseEntity.ok(fileDownloadUri);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
+            // Save the file to the desired directory (e.g., uploads/)
+            Path targetLocation = uploadDir.resolve(fileName);
+            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+            // Return only the file name (or relative path) without the full URL
+            return ResponseEntity.ok(fileName);
+        } catch (IOException e) {
+            // Handle errors (e.g., file saving errors)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File upload failed");
         }
     }
 

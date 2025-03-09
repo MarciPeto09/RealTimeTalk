@@ -89,7 +89,6 @@ public class MessagesService {
         message.setReceiver(receiver);
         message.setContent(requestMessagesDto.getContent());
         message.setTimestamp(LocalDateTime.now());
-        message.setFileUrl(requestMessagesDto.getFileUrl());
 
         if (file != null && !file.isEmpty()) {
             String fileName = fileStorageService.storeFile(file);
