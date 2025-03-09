@@ -89,13 +89,9 @@ public class MessageController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteMessage(@PathVariable("id") Long id) {
-        try {
-            messagesService.deleteMessage(id);
-            return ResponseEntity.ok("Message deleted successfully");
-        }  catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while deleting message");
-        }
+    public ResponseEntity<Void> deleteMessage(@PathVariable("id") Long id) {
+        messagesService.deleteMessage(id);
+        return ResponseEntity.noContent().build();
     }
 
 

@@ -51,9 +51,9 @@ public class UserService {
 
 
     @Transactional
-    public void deleteUser(String username) {
-        Users user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User with username '" + username + "' does not exist."));
+    public void deleteUser(Long id) {
+        Users user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User with username '" + id + "' does not exist."));
         userRepository.delete(user);
     }
 

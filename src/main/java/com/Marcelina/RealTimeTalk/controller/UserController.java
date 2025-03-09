@@ -35,9 +35,9 @@ import java.util.List;
             return ResponseEntity.ok(userService.save(requestUserDto));
         }
 
-        @DeleteMapping("/find/{username}")
-        public ResponseEntity<Void> deleteUser(@PathVariable String username) {
-            userService.deleteUser(username);
+        @DeleteMapping("/find/{id}")
+        public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+            userService.deleteUser(id);
             return ResponseEntity.noContent().build();
         }
 
