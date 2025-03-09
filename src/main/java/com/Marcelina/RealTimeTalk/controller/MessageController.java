@@ -9,6 +9,7 @@ import com.Marcelina.RealTimeTalk.service.FileStorageService;
 import com.Marcelina.RealTimeTalk.service.MessagesService;
 import com.Marcelina.RealTimeTalk.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,6 +86,16 @@ public class MessageController {
         RespondMessagesDto savedMessage = messagesService.saveMessageWithFile(requestMessagesDto, file);
 
         return ResponseEntity.ok(savedMessage);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteMessage(@PathVariable("id") Long id) {
+        try {
+            messagesService.deleteMessage(id);
+            return ResponseEntity.ok("Message deleted successfully");
+        }  catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while deleting message");
+        }
     }
 
 

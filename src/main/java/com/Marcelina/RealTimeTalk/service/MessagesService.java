@@ -102,4 +102,11 @@ public class MessagesService {
     }
 
 
+    public void deleteMessage(Long id) {
+        Messages message = messagesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Message not found with id " + id));
+        messagesRepository.delete(message);
+    }
+
+
 }
