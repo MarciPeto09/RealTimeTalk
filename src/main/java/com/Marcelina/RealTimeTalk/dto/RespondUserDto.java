@@ -13,20 +13,13 @@ public class RespondUserDto {
     private Long id;
     private String username;
     private String email;
-    private List<Long> sendMessages;
-    private List<Long> receivedMessages;
     private String photoUrl;
+    private Boolean connected;
 
-    public RespondUserDto(Long id, String username, String email) {
+    public RespondUserDto(Long id, String username, String email, String photoUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
-    }
-
-    public RespondUserDto(Long id, String email, String username, String photoUrl) {
-        this.id = id;
-        this.email = email;
-        this.username = username;
         this.photoUrl = photoUrl;
     }
 }

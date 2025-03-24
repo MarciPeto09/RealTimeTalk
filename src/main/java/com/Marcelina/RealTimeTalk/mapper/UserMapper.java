@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     public Users mapToEntity(RequestUserDto requestUserDto){
+        if (requestUserDto == null) {
+            return null;
+        }
         Users user = new Users();
         user.setUsername(requestUserDto.getUsername());
         user.setPassword(requestUserDto.getPassword());
@@ -18,6 +21,9 @@ public class UserMapper {
     }
 
     public RespondUserDto mapToResponse(Users user){
+        if (user == null) {
+            return null;
+        }
         RespondUserDto response = new RespondUserDto();
         response.setId(user.getId());
         response.setUsername(user.getUsername());

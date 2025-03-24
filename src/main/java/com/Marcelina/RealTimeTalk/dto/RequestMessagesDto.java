@@ -12,8 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestMessagesDto {
+    private Long conversationId;
     private Long senderId;
-    private Long receiverId;
     private String content;
     private String fileName;
     private String fileUrl;

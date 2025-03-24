@@ -1,12 +1,8 @@
 package com.Marcelina.RealTimeTalk.model;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -22,14 +18,14 @@ public class Messages {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id", nullable = false)
+    @JoinColumn(name = "conversation_id", nullable = false)
     @JsonBackReference
-    private Users sender;
+    private Conversation conversation;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id", nullable = false)
-    @JsonBackReference
-    private Users receiver;
+    @JoinColumn(name = "sender_id", nullable = false)
+    @ToString.Exclude
+    private Users sender;
 
     @Column
     private String content;

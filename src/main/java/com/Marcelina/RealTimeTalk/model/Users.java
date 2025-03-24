@@ -1,12 +1,8 @@
 package com.Marcelina.RealTimeTalk.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -30,16 +26,12 @@ public class Users {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    List<Messages> sendMessages;
+    @ManyToMany(mappedBy = "participants",cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Conversation> conversations;
 
 
-    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    List<Messages> receivedMessages;
-
-    @Column(name = "connected" )
+    @Column(name = "connected")
     private Boolean connected = false;
 
 }

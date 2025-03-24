@@ -1,9 +1,11 @@
 package com.Marcelina.RealTimeTalk.controller;
 
 import com.Marcelina.RealTimeTalk.service.FileStorageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,15 +21,11 @@ import java.nio.file.StandardCopyOption;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class FileController {
 
     private final FileStorageService fileStorageService;
     private final Path uploadDir = Paths.get("uploads");
-
-    @Autowired
-    public FileController(FileStorageService fileStorageService) {
-        this.fileStorageService = fileStorageService;
-    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -47,17 +45,16 @@ public class FileController {
     }
 
 
-    @GetMapping("/uploads/{filename}")
+    @GetMapping("/uploads/{filename:.+}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
         try {
             Path filePath = Paths.get("uploads").resolve(filename).normalize();
-            Resource fileResource = new UrlResource(filePath.toUri());
+            Resource resource = new UrlResource(filePath.toUri());
 
-            if (!fileResource.exists() || !fileResource.isReadable()) {
+            if (!resource.exists() || !resource.isReadable()) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Dynamically determine file content type
             String contentType = Files.probeContentType(filePath);
             if (contentType == null) {
                 contentType = "application/octet-stream";
@@ -65,7 +62,9 @@ public class FileController {
 
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
-                    .body(fileResource);
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
