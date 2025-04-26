@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class ConversationService {
 
     private final ConversationRepository conversationRepository;
-    private final UserRepository userRepository;
     private final ConversationMapper conversationMapper;
 
     public RespondConversationDto createConversation(RequestConversationDto requestDto) {
